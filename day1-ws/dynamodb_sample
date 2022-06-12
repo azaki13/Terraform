@@ -1,0 +1,37 @@
+provider "aws" {
+    region = "us-east-1"
+}
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 3.0.0, < 4.0.0"
+    }
+  }
+}
+
+resource "aws_dynamodb_table" "student" {
+  count          = 0
+  name           = "Students"
+  hash_key       = "StudentId"
+  range_key      = "Email"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 2
+  write_capacity = 2
+
+  attribute {
+    name = "StudentId"
+    type = "S"
+  }
+
+  attribute {
+    name = "Email"
+    type = "S"
+  }
+
+  tags = {
+    Name        = "dynamodb-table-1"
+    Environment = "production"
+  }
+}
